@@ -1,0 +1,58 @@
+## Ansible Managed
+{% if es_cluster_settings is defined %}
+## --- Cluster Settings ---------- ##
+{{ es_cluster_settings | to_nice_yaml }}
+{% endif %}
+{% if es_node_settings is defined %}
+## --- Node Settings ------------- ##
+{{ es_node_settings | to_nice_yaml }}
+{% endif %}
+{% if es_path_settings is defined %}
+## --- Path Settings ------------- ##
+{{ es_path_settings | to_nice_yaml }}
+{% endif %}
+{% if es_bootstrap_settings is defined %}
+## --- Bootstrap Settings -------- ##
+{{ es_bootstrap_settings | to_nice_yaml }}
+{% endif %}
+## --- Network Settings ---------- ##
+{% if es_network_settings is defined %}
+{% if es_network_settings['network.host'] is none or es_network_settings['network.host'] is not defined %}
+network.host: {{ "[ _" ~ ansible_interfaces | union(es_network_interface_include) | difference(es_network_interface_exlude) | join("_ , _") ~ "_ ]" }}
+{{ es_network_settings | to_nice_yaml }}
+{% else %}
+{{ es_network_settings | to_nice_yaml }}
+{% endif %}
+{% endif %}
+{% if es_discovery_settings is defined %}
+## --- Discovery Settings -------- ##
+{{ es_discovery_settings | to_nice_yaml }}
+{% endif %}
+{% if es_gateway_settings is defined %}
+## --- Gateway Settings ---------- ##
+{{ es_gateway_settings | to_nice_yaml }}
+{% endif %}
+{% if es_various_settings is defined %}
+## --- Various Settings ---------- ##
+{{ es_various_settings | to_nice_yaml }}
+{% endif %}
+{% if es_remote_settings is defined %}
+## --- Remote Reindex Settings --- ##
+{{ es_remote_settings | to_nice_yaml }}
+{% endif %}
+{% if es_repo_settings is defined %}
+## --- Repo Settings ------------- ##
+{{ es_repo_settings | to_nice_yaml }}
+{% endif %}
+{% if es_xpack_options is defined and es_xpack == true %}
+## --- X-Pack Settings ----------- ##
+{{ es_xpack_options | to_nice_yaml }}
+{% endif %}
+{% if es_xpack_security_realms is defined and es_xpack == true and es_xpack_ad_auth == true %}
+## --- X-Pack Security Realms ---- ##
+{{ es_xpack_security_realms | to_nice_yaml }}
+{% endif %}
+{% if es_xpack_exporters is defined and es_xpack == true and es_xpack_export == true %}
+## --- X-Pack Exporters ---------- ##
+{{ es_xpack_exporters | to_nice_yaml }}
+{% endif %}

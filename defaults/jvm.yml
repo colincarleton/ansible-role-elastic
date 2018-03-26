@@ -1,0 +1,3 @@
+#Java and CPU settings
+es_xms: 512m
+es_xmx: 512m

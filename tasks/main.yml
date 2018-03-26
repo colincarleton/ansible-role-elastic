@@ -1,0 +1,42 @@
+---
+# Loads Default Variables
+- name: Load Default Variables
+  include_vars:
+    dir: '../defaults'
+  when: use_defaults == "true"
+
+# # Checks if Elastic is installed
+# - name: Check if Elastic is installed
+#   yu:m:
+#     list={{ es }}
+#   register: es_installed
+#
+# Elastic Install
+- name: Elastic Install
+  include_tasks: install.yml
+  # when: es_installed.results|selectattr("yumstate", "match", "installed")|list|length == 0
+
+# To add: Elastic Upgrade Option
+
+# Elastic Configuration Options
+- name: Elastic Config
+  include_tasks: elastic.yml
+
+# ElasticSearch Plugins
+- name: Elastic Plugins
+  include_tasks: plugins.yml
+  when: es_plugins is defined
+
+# X-Pack Configuration Options
+- name: X-Pack Config
+  include_tasks: xpack.yml
+  with_items:
+    - "{{ es_plugins }}"
+  when: (es_plugins is defined and "x-pack" in item.plugin.list_name)
+
+# Start and Enable ElasticSearch
+- name: Start and Enable ElasticSearch
+  service:
+    name: elasticsearch
+    enabled: yes
+    state: restarted

@@ -1,0 +1,69 @@
+---
+## --- X-Pack Settings ----------- ##
+es_xpack: true
+es_xpack_ad_auth: true
+es_xpack_export: false
+es_ssl: false
+
+## --- X-Pack Options ------------ ##
+es_xpack_options:
+  xpack.graph.enabled: true
+  xpack.monitoring.enabled: true
+  xpack.security.audit.enabled: true
+  xpack.security.audit.index.events.exclude:
+    - anonymous_access_denied
+    - realm_authentication_failed
+    - access_denied
+    - run_as_granted
+    - run_as_denied
+    - tampered_request
+    - connection_granted
+    - connection_denied
+  xpack.security.audit.index.events.emit_request_body: false
+  xpack.security.audit.index.events.include:
+    - access_granted
+    - authentication_failed
+    - authentication_success
+  xpack.security.audit.logfile.events.exclude:
+    - anonymous_access_denied
+    - realm_authentication_failed
+    - access_denied
+    - run_as_granted
+    - run_as_denied
+    - tampered_request
+    - connection_granted
+    - connection_denied
+  xpack.security.audit.logfile.events.emit_request_body: false
+  xpack.security.audit.logfile.events.include:
+    - access_granted
+  xpack.security.audit.outputs: [ index, logfile ]
+  xpack.security.enabled: true
+  xpack.watcher.enabled: true
+
+## --- X-Pack Exporters ---------- ##
+es_xpack_exporters:
+  xpack.monitoring.exporters:
+    id1:
+      type: http
+      host: ["http://localhost:9200"]
+      auth.username: elastic
+      auth.password: changeme
+
+## --- X-Pack Security Realms ---- ##
+es_xpack_security_realms:
+  xpack:
+    security:
+      authc:
+        realms:
+          active_directory:
+            type: active_directory
+            order: 1
+            domain_name: adminsys.mrll.com
+            url: ldap://us2dcs.adminsys.mrll.com:389
+            follow_referrals: false
+            load_balance:
+              type: dns_round_robin
+            unmapped_groups_as_roles: true
+          native:
+            type: native
+            order: 0

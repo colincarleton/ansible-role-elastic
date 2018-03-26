@@ -1,0 +1,7 @@
+---
+# Defaults Work Around
+use_defaults: "true"
+
+# Version info and installation repo
+es: elasticsearch-5.6.1
+repo: elasticsearch-5.6.1

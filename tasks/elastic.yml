@@ -1,0 +1,20 @@
+---
+- name: Place ElasticSearch Config
+  template:
+    src: elasticsearch.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
+
+- name: Place Log4j Settings
+  template:
+    src: elasticsearch.log4j2.properties.j2
+    dest: /etc/elasticsearch/log4j2.properties
+
+- name: Set ElasticSearch JVM Options
+  template:
+    src: jvm.options.j2
+    dest: /etc/elasticsearch/jvm.options
+
+- name: Set ElasticSearch Limits
+  template:
+    src: elasticsearch.service.j2
+    dest: /usr/lib/systemd/system/elasticsearch.service

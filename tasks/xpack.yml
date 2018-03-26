@@ -1,0 +1,5 @@
+---
+- name: X-Pack Log4j Settings
+  template:
+    src: xpack.log4j2.properties.j2
+    dest: /etc/elasticsearch/x-pack/log4j2.properties

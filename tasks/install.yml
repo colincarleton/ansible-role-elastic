@@ -1,0 +1,20 @@
+---
+# Checks for Repo existence
+- name: Check for Repo
+  stat:
+    path: /etc/yum.repos.d/{{ repo }}.repo
+  register: es_repo
+
+- name: Add ElasticSearch 5.6.1 Repository
+  yum_repository:
+    name: "{{ repo }}"
+    description: Elasticsearch repository for 5.x packages
+    baseurl: https://artifacts.elastic.co/packages/5.x/yum
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    gpgcheck: yes
+  when: not es_repo.stat.exists
+
+- name: Install ElasticSearch from Repo
+  yum:
+    name: "{{ es }}"
+    state: present

@@ -1,0 +1,20 @@
+---
+- name: Copy ElasticSearch Security
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/security/
+  with_fileglob:
+    - "/etc/ansible/artifacts/elasticsearch-5.4/installers/*"
+
+- name: Place ElasticSearch Security
+  template:
+    src: "{{ item.src }}"
+    dest: /etc/elasticsearch/x-pack/{{ item.dest }}
+    force: yes
+  with_items:
+    - src: role_mapping.yml.j2
+      dest: role_mapping.yml
+    - src: roles.yml.j2
+      dest: roles.yml
+  when: es_plugins is defined
+

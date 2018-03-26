@@ -1,0 +1,22 @@
+---
+- name: Copy ElasticSearch Key
+  copy:
+    src: "{{ ansible_artifacts }}/vagrant/certs/{{ ansible_nodename }}/{{ es_ssl_key }}"
+    dest: /etc/elasticsearch/certs/
+    owner: elasticsearch
+    group: elasticsearch
+
+- name: Copy ElasticSearch Cert
+  copy:
+    src: "{{ ansible_artifacts }}/vagrant/certs/{{ ansible_nodename }}/{{ es_ssl_crt }}"
+    dest: /etc/elasticsearch/certs/
+    owner: elasticsearch
+    group: elasticsearch
+
+- name: Copy ElasticSearch CA
+  copy:
+    src: "{{ ansible_artifacts }}/vagrant/certs/ca/{{ es_ssl_ca }}"
+    dest: /etc/elasticsearch/certs/
+    owner: elasticsearch
+    group: elasticsearch
+

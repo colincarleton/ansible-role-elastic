@@ -1,0 +1,10 @@
+---
+- name: List of Installed Plugins
+  shell:  /usr/share/elasticsearch/bin/elasticsearch-plugin list
+  register: installed_es_plugins
+
+- name: Install ElasticSearch plugins
+  shell: /usr/share/elasticsearch/bin/elasticsearch-plugin install {{ item.plugin.plugin_name}}
+  with_items:
+    - "{{ es_plugins }}"
+  when: (es_plugins is defined and item.plugin.list_name not in installed_es_plugins.stdout)

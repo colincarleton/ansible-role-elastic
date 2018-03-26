@@ -1,0 +1,6 @@
+# Elasticsearch Plugins
+es_plugins:
+  - plugin:
+      plugin_name: "x-pack"
+      plugin_version: "5.6.1"
+      list_name: "x-pack"

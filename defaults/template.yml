@@ -1,0 +1,62 @@
+---
+## --- Cluster Settings ---------- ##
+es_cluster_settings:
+  cluster.name: default
+  cluster.routing.allocation.same_shard.host: true
+
+## --- Node Settings ------------- ##
+es_node_settings:
+  node.name: default-node1
+  node.master: true
+  node.data: true
+
+## --- Path Settings ------------- ##
+es_path_settings:
+  path.data: /var/lib/elasticsearch
+  path.logs: /var/log/elasticsearch
+
+## --- Bootstrap Settings -------- ##
+es_bootstrap_settings:
+  bootstrap.memory_lock: false
+  bootstrap.system_call_filter: false
+
+## --- Network Settings ---------- ##
+es_network_settings:
+  network.host: '{{ temp_string.split(",") }}'
+  #'{{ "[ _" ~ ansible_interfaces | union(es_network_interface_include) | difference(es_network_interface_exlude) | join("_ , _") ~ "_ ]" }}'
+  http.port: 9200
+  transport.host: [ _site_ ]
+  transport.tcp.port: 9300
+
+temp_string: '{{ "_" ~ ansible_interfaces | union(es_network_interface_include) | difference(es_network_interface_exlude) | join("_ , _") ~ "_" }}'
+
+es_network_interface_include:
+  - site
+  - local
+es_network_interface_exlude:
+  - lo
+
+## --- Discovery Settings -------- ##
+es_discovery_settings:
+  discovery.zen.ping.unicast.hosts: ["default-node1"]
+  discovery.zen.minimum_master_nodes: 1
+
+## --- Gateway Settings ---------- ##
+es_gateway_settings:
+  gateway.expected_nodes: 1
+  gateway.recover_after_time: 120m
+  gateway.recover_after_nodes: 1
+
+## --- Various settings ---------- ##
+es_various_settings:
+  action.destructive_requires_name: false
+  #action.auto_create_index: false
+
+
+## --- Remote Reindex settings --- ##
+es_remote_settings:
+  reindex.remote.whitelist: http://localhost:9200/
+
+## --- Repo settings ------------- ##
+es_repo_settings:
+  path.repo: ["/tmp"]
